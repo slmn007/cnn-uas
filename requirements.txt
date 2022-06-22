@@ -1,5 +1,4 @@
 flask
 numpy
-keras
 gunicorn
-tensorflow
+tensorflow-cpu
