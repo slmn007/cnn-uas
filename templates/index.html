@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <title>Machine Learning - CNN</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+  <!-- partial:index.partial.html -->
+  <h2>Test Your Image</h2>
+  <p class="lead">Is that category of face, cougar, emu, flaminggo, ibis, pigeon or roaster</p>
+
+  <!-- Upload  -->
+  <form id="file-upload-form" class="uploader" method="post" enctype="multipart/form-data" >
+    <input id="file-upload" type="file" name="img_file" accept="'png', 'jpg', 'jpeg'" />
+    <label for="file-upload" id="file-drag">
+      <img id="file-image" src="#" alt="Preview" class="hidden">
+      <div id="start">
+        <i class="fa fa-download" aria-hidden="true"></i>
+        <div>Select file</div>
+        <div id="notimage" class="hidden">Please select an image</div>
+        <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
+      </div>
+      <div id="response" class="hidden">
+        <div id="messages"></div>
+        <progress class="progress" id="file-progress" value="0">
+          <span>0</span>%
+        </progress>
+      </div>
+      {% if prediction %}
+        <h2 class="txt-predict">Result Predict: {{prediction}}</h2>
+      {% endif %}
+    </label>
+    <button type="submit" class="btn-predict" id="submit-button">Predict</button>
+  </form>
+  
+  <!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+  <script src="{{ url_for('static', filename='js/script.js') }}" type="text/javascript"></script>
+
+</body>
+</html>
