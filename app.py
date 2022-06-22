@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 
 import numpy as np
-from PIL import Image
+
 import tensorflow
 
 app = Flask(__name__)
@@ -22,8 +22,8 @@ class_dict = {  'Faces': 0,
                 'rooster': 10   }
 
 def model_predict(img_path, model_train):
-    test_image = Image.load_img(img_path, target_size=(140, 140)) # load data
-    test_image = Image.img_to_array(test_image)
+    test_image = tensorflow.keras.utils.load_img(img_path, target_size=(140, 140)) # load data
+    test_image = tensorflow.keras.utils.img_to_array(test_image)
     test_image = np.array([test_image])
     result = model_train.predict_on_batch(test_image) # Predict data
     
