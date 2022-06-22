@@ -2,12 +2,13 @@ from flask import Flask, render_template, request
 
 import numpy as np
 
-import tensorflow
+from tensorflow.keras.models import load_model
+from tensorflow.keras.utils import img_to_array, load_img
 
 app = Flask(__name__)
 
 model_path = "model/caltech_101.hdf5"
-model_train = tensorflow.keras.models.load_model(model_path)
+model_train = load_model(model_path)
 
 class_dict = {  'Faces': 0,
                 'Faces_easy': 1,
@@ -22,8 +23,8 @@ class_dict = {  'Faces': 0,
                 'rooster': 10   }
 
 def model_predict(img_path, model_train):
-    test_image = tensorflow.keras.utils.load_img(img_path, target_size=(140, 140)) # load data
-    test_image = tensorflow.keras.utils.img_to_array(test_image)
+    test_image = load_img(img_path, target_size=(140, 140)) # load data
+    test_image = img_to_array(test_image)
     test_image = np.array([test_image])
     result = model_train.predict_on_batch(test_image) # Predict data
     
@@ -42,7 +43,7 @@ def predic():
 
     result = model_predict(img_path, model_train)
 
-    for category, index in class_dict:
+    for category, index in class_dict.items():
         if index == result.argmax():
             print('Kelas',result.argmax(), 'Menunjukkan Kategori', category)
             
