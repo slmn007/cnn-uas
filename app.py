@@ -3,19 +3,23 @@ from flask import Flask, render_template, request
 import numpy as np
 
 import tensorflow
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 app = Flask(__name__)
 
 model_path = "model/caltech_101.hdf5"
-model_train = load_model(model_path)
+model_train = tensorflow.keras.models.load_model(model_path)
 
-test_datagen = ImageDataGenerator(rescale=1./255)
-test_set = test_datagen.flow_from_directory('.\Test',
-                                            target_size=(140, 140),
-                                            batch_size= 32,
-                                            class_mode='categorical')
+class_dict = {  'Faces': 0,
+                'Faces_easy': 1,
+                'cougar_body': 2,
+                'cougar_face': 3,
+                'crocodile': 4,
+                'crocodile_head': 5,
+                'emu': 6,
+                'flamingo': 7,
+                'ibis': 8,
+                'pigeon': 9,
+                'rooster': 10   }
 
 def model_predict(img_path, model_train):
     test_image = tensorflow.keras.utils.load_img(img_path, target_size=(140, 140)) # load data
@@ -33,14 +37,12 @@ def index():
 @app.route('/', methods=['POST'])
 def predic():
     img_file = request.files['img_file']
-    img_path = "images/" + img_file.filename
-    print(img_path)
-    print('woy sat disini')
+    img_path = "./images/" + img_file.filename
     img_file.save(img_path)
 
     result = model_predict(img_path, model_train)
 
-    for category, index in test_set.class_indices.items():
+    for category, index in class_dict:
         if index == result.argmax():
             print('Kelas',result.argmax(), 'Menunjukkan Kategori', category)
             
